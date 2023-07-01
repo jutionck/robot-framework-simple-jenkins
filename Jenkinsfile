@@ -15,17 +15,17 @@ pipeline {
             }
         }
 
-        stage("Test") {
+        stage("Robot Test") {
             steps {
-                echo 'Test'
-                sh '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot -d Results main.robot'
+                echo 'Robot Test'
+                sh 'ls -al'
+                // sh '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot -d Results main.robot'
             }
         }
     }
     post {
         always {
             echo 'This will always run'
-            slackSend(channel: '#training', message: "${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
         }
         success {
             echo 'This will run only if successful'
