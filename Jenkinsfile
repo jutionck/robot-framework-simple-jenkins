@@ -8,18 +8,10 @@ pipeline {
             }
         }
 
-        stage("Robot Check") {
-            steps {
-                echo 'Robot Check'
-                sh '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot --version'
-            }
-        }
-
         stage("Robot Test") {
             steps {
                 echo 'Robot Test'
-                sh 'ls -al'
-                // sh '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot -d Results main.robot'
+                sh '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot -d Results main.robot'
             }
         }
     }
