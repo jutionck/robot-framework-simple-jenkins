@@ -25,6 +25,7 @@ pipeline {
     post {
         always {
             echo 'This will always run'
+            slackSend(channel: '#training', message: "${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
         }
         success {
             echo 'This will run only if successful'
@@ -32,6 +33,7 @@ pipeline {
         }
         failure {
             echo 'This will run only if failed'
+            slackSend(channel: '#training', message: "Build deployed failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
         }
     }
 }
