@@ -17,7 +17,7 @@ pipeline {
         stage("Robot Test") {
             steps {
                 echo 'Robot Test'
-                sh "${ROBOT} -d Results main.robot"
+                sh "${ROBOT} --outputdir reports main.robot"
             }
         }
     }
@@ -28,6 +28,19 @@ pipeline {
         success {
             echo 'This will run only if successful'
             slackSend(channel: "${CHANNEL}", message: "Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            step(
+                    [
+                            $class              : 'RobotPublisher',
+                            outputPath          : 'reports',
+                            outputFileName      : "output.xml",
+                            reportFileName      : 'report.html',
+                            logFileName         : 'log.html',
+                            disableArchiveOutput: true,
+                            passThreshold       : 95.0,
+                            unstableThreshold   : 90.0,
+                            otherFiles          : "**/*.png,**/*.jpg",
+                    ]
+            )
         }
         failure {
             echo 'This will run only if failed'
