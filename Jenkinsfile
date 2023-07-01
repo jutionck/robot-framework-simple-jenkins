@@ -1,17 +1,23 @@
 pipeline {
     agent any
+    environment {
+        GIT_URL = 'git@github.com:jutionck/robot-framework-simple-jenkins.git'
+        BRANCH = 'main'
+        ROBOT = '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot'
+        CHANNEL = '#training'
+    }
     stages {
         stage("Clone Source") {
             steps {
                 echo 'Clone Source'
-                git branch: 'main', url: 'git@github.com:jutionck/robot-framework-simple-jenkins.git'
+                git branch: "${BRANCH}", url: "${GIT_URL}"
             }
         }
 
         stage("Robot Test") {
             steps {
                 echo 'Robot Test'
-                sh '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot -d Results main.robot'
+                sh "${ROBOT} -d Results main.robot"
             }
         }
     }
@@ -21,11 +27,11 @@ pipeline {
         }
         success {
             echo 'This will run only if successful'
-            slackSend(channel: '#training', message: "Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            slackSend(channel: "${CHANNEL}", message: "Build deployed successfully - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
         }
         failure {
             echo 'This will run only if failed'
-            slackSend(channel: '#training', message: "Build deployed failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            slackSend(channel: "${CHANNEL}", message: "Build deployed failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
         }
     }
 }
