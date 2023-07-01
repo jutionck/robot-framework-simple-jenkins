@@ -7,9 +7,9 @@ pipeline {
         CHANNEL = '#training'
     }
     stages {
-        stage("Clone Source") {
+        stage("Clone") {
             steps {
-                echo 'Clone Source'
+                echo 'Clone'
                 git branch: "${BRANCH}", url: "${GIT_URL}"
             }
         }
