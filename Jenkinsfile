@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         GIT_URL = 'git@github.com:jutionck/robot-framework-simple-jenkins.git'
-        BRANCH = 'main'
+        BRANCH = 'with-docker'
         ROBOT = '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot'
         CHANNEL = '#training'
         IMAGE = 'my-robot-test'
@@ -21,7 +21,7 @@ pipeline {
                 sh "docker build -t ${IMAGE} ."
             }
         }
-        
+
         stage("Run") {
             steps {
                 echo 'Run Test'
