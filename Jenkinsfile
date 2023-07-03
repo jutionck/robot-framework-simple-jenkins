@@ -5,6 +5,7 @@ pipeline {
         BRANCH = 'main'
         ROBOT = '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot'
         CHANNEL = '#training'
+        IMAGE = 'my-robot-test'
     }
     stages {
         stage("Clone") {
@@ -14,10 +15,17 @@ pipeline {
             }
         }
 
-        stage("Robot Test") {
+        stage("Build") {
             steps {
-                echo 'Robot Test'
-                sh "${ROBOT} --outputdir reports main.robot"
+                echo 'Build'
+                sh "docker build -t ${IMAGE} ."
+            }
+        }
+        
+        stage("Run") {
+            steps {
+                echo 'Run Test'
+                sh "docker run --rm ${IMAGE}"
             }
         }
     }
