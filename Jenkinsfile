@@ -6,8 +6,16 @@ pipeline {
         ROBOT = '/Library/Frameworks/Python.framework/Versions/3.11/bin/robot'
         CHANNEL = '#training'
         IMAGE = 'my-robot-test'
+        CONTAINER = 'my-robot-test-app'
     }
     stages {
+        stage("Cleaning up") {
+            steps {
+                echo 'Cleaning up'
+                sh "docker rm -f ${CONTAINER} || true"
+            }
+        }
+
         stage("Clone") {
             steps {
                 echo 'Clone'
