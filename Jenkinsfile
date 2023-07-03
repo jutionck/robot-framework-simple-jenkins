@@ -7,12 +7,13 @@ pipeline {
         CHANNEL = '#training'
         IMAGE = 'my-robot-test'
         CONTAINER = 'my-robot-test-app'
+        DOCKER_APP = '/usr/local/bin/docker'
     }
     stages {
         stage("Cleaning up") {
             steps {
                 echo 'Cleaning up'
-                sh "docker rm -f ${CONTAINER} || true"
+                sh "${DOCKER_APP} rm -f ${CONTAINER} || true"
             }
         }
 
@@ -26,14 +27,14 @@ pipeline {
         stage("Build") {
             steps {
                 echo 'Build'
-                sh "docker build -t ${IMAGE} ."
+                sh "${DOCKER_APP} build -t ${IMAGE} ."
             }
         }
 
         stage("Run") {
             steps {
                 echo 'Run Test'
-                sh "docker run --rm ${IMAGE}"
+                sh "${DOCKER_APP} run --rm ${IMAGE}"
             }
         }
     }
